@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Diary</string>
+    <string name="nothing_to_show">Nothing to show</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_your_memories">Enter your memories</string>
+    <string name="enter_your_memory">Enter your memory...</string>
+</resources>

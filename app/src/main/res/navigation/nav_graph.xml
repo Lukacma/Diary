@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.diary.CalendarFragment"
+        android:label="CalendarFragment"
+        tools:layout="@layout/calendar_view">
+        <action
+            android:id="@+id/action_calendarFragment_to_noteWritingFragment"
+            app:destination="@id/noteWritingFragment" />
+        <argument
+            android:name="note"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteWritingFragment"
+        android:name="com.example.diary.NoteWritingFragment"
+        android:label="NoteWritingFragment"
+        tools:layout="@layout/note_writing_layout">
+        <action
+            android:id="@+id/action_noteWritingFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+</navigation>
