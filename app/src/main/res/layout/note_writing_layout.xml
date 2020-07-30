@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -19,8 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/cancel_button"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            app:layout_constraintStart_toEndOf="@+id/cancel_button" />
 
         <Button
             android:id="@+id/cancel_button"
@@ -35,17 +35,17 @@
         <EditText
             android:id="@+id/editTextTextPersonName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_height="0dp"
+            android:allowUndo="false"
             android:ems="10"
+            android:gravity="top"
             android:hint="@string/enter_your_memory"
             android:inputType="textMultiLine"
-            android:maxLines="15"
             app:layout_constraintBottom_toTopOf="@+id/save_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+            tools:text="To add a dependency on Room, you must add the Google Maven repository to your project. Read Google's Maven repository for more information.  Dependencies for Room include testing Room migrations and Room RxJava  Add the dependencies for the artifacts you need in the build.gradle file for your app or module:  dependencies {   def room_version = &quot;2.2.5&quot;    implementation &quot;androidx.room:room-runtime:$room_version&quot;   annotationProcessor &quot;androidx.room:room-compiler:$room_version&quot; // For Kotlin use kapt instead of annotationProcessor    // optional - Kotlin Extensions and Coroutines support for Room   implementation &quot;androidx.room:room-ktx:$room_version&quot;    // optional - RxJava support for Room   implementation &quot;androidx.room:room-rxjava2:$room_version&quot;    // optional - Guava support for Room, including Optional and ListenableFuture   implementation &quot;androidx.room:room-guava:$room_version&quot;    // Test helpers   testImplementation &quot;androidx.room:room-testing:$room_version&quot; }  Note: For Kotlin-based apps, make sure you use kapt instead of annotationProcessor. You should also add the kotlin-kapt plugin. For information on using Kotlin extensions, see the ktx documentation.  For more information about dependencies, see Add Build Dependencies.  Configuring Compiler Options Room has the following annotation processor options:  room.schemaLocation: Configures and enables exporting database schemas into JSON files in the given directory. See Room Migrations for more information. room.incremental: Enables Gradle incremental annotation proccesor. room.expandProjection: Configures Room to rewrite queries such that their top star projection is expanded to only contain the columns defined in the DAO method return type. An example of how these options can be configured are shown in the following code snippet:  android {     ...     defaultConfig {         ...         javaCompileOptions {             annotationProcessorOptions {                 arguments += [                     &quot;room.schemaLocation&quot;:&quot;$projectDir/schemas&quot;.toString(),                     &quot;room.incremental&quot;:&quot;true&quot;,                     &quot;room.expandProjection&quot;:&quot;true&quot;]             }         }     } }  Feedback Your feedback helps make Jetpack better. Please let us know if you discover new issues or have ideas for improving this library. Please take a look at the existing issues in this library before you create a new one. You can add your vote to an existing issue by clicking the star button.  CREATE A NEW ISSUE  See the Issue Tracker documentation for more information.  Version 2.3.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

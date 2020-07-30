@@ -16,48 +16,30 @@
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_height="wrap_content"
             android:fadingEdge="horizontal"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/note"
-            app:layout_constraintEnd_toStartOf="@+id/note"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintBottom_toBottomOf="@+id/noteText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/note"
+            app:layout_constraintTop_toTopOf="@+id/noteText"
+            app:layout_constraintVertical_bias="0.55"
             app:showTime="@{diaryNote.time}"
             tools:text="6:00" />
 
-        <ScrollView
-            android:id="@+id/note"
+        <TextView
+            android:id="@+id/noteText"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center_vertical"
+            android:text="@{diaryNote.note}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/time"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/noteText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{diaryNote.note}"
-                    tools:text="Yesterday, was a nice day full of new suprises for me. I woke up early." />
-            </LinearLayout>
-        </ScrollView>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Yesterday, was a nice day full of new suprises for me. I woke up early." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

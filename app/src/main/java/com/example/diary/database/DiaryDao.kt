@@ -10,9 +10,12 @@ import java.time.ZonedDateTime
 @Dao
 interface DiaryDao {
     @Query("Select * from diarynotes where time_taken BETWEEN :dayst AND :dayet")
-    fun getNotes(dayst: ZonedDateTime, dayet:ZonedDateTime):LiveData<List<DiaryNotes>>
+    fun getNotes(dayst: ZonedDateTime, dayet: ZonedDateTime): LiveData<List<DiaryNotes>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertNote(note:DiaryNotes):Long
+    fun insertNote(note: DiaryNotes): Long
+
+    @Query("Select time_taken from diarynotes order by time_taken asc Limit 1")
+    fun getEarliestNote(): LiveData<ZonedDateTime>
 
 }
