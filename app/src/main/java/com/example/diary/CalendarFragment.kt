@@ -13,7 +13,6 @@ import com.example.diary.database.DiaryDatabase
 import com.example.diary.databinding.CalendarViewBinding
 import com.example.diary.factories.DiaryViewModelFactory
 import java.time.LocalDate
-import java.util.*
 
 
 @Suppress("DEPRECATION")
@@ -40,8 +39,9 @@ class CalendarFragment: Fragment() {
 
 
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
-            binding.calendarView.date=LocalDate.of(year,month+1,day).atStartOfDay(TimeZone.getDefault().toZoneId()).toEpochSecond()*1000
-            val currentDate=LocalDate.of(year,month+1,day).atStartOfDay(TimeZone.getDefault().toZoneId())
+            binding.calendarView.date =
+                LocalDate.of(year, month + 1, day).toEpochDay() * 24 * 3600 * 1000
+            val currentDate = LocalDate.of(year, month + 1, day)
             viewModel.setNewDate(currentDate)
         }
 

@@ -7,46 +7,45 @@ import androidx.lifecycle.ViewModel
 import com.example.diary.database.DiaryDao
 import com.example.diary.database.DiaryNotes
 import kotlinx.coroutines.*
+import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
-import java.util.*
 
 
 val midnight: LocalTime = LocalTime.MIDNIGHT
 class DiaryViewModel(private val dao:DiaryDao):ViewModel() {
 
-    private val job= Job()
-    private val viewModelScope= CoroutineScope(job+Dispatchers.Main)
-    private val currentDay:MutableLiveData<ZonedDateTime> =MutableLiveData(ZonedDateTime.now())
-    val notes=Transformations.switchMap(currentDay) { date ->
+    private val job = Job()
+    private val viewModelScope = CoroutineScope(job + Dispatchers.Main)
+    private val currentDay: MutableLiveData<LocalDate> = MutableLiveData(LocalDate.now())
+    val notes = Transformations.switchMap(currentDay) { date ->
         loadNotes(date)
     }
 
-    val listVisible=Transformations.map(notes){
+    val listVisible = Transformations.map(notes) {
         it?.isNotEmpty()
     }
 
-    fun loadNotes(date:ZonedDateTime):LiveData<List<DiaryNotes>>{
-            val dayst=date.truncatedTo(ChronoUnit.DAYS)
-            val dayet=date.plusDays(1)
-            return dao.getNotes(dayst, dayet)
+    fun loadNotes(date: LocalDate): LiveData<List<DiaryNotes>> {
+        val dayst = date.atStartOfDay(ZoneId.systemDefault())
+        val dayet = date.plusDays(1).atStartOfDay(ZoneId.systemDefault())
+        return dao.getNotes(dayst, dayet)
     }
 
-    fun insertNote(note:String) {
+    fun insertNote(note: String) {
         viewModelScope.launch {
-            val time = ZonedDateTime.now(TimeZone.getDefault().toZoneId())
+            val time = ZonedDateTime.now()
             withContext(Dispatchers.IO) {
                 val memento = DiaryNotes(time = time, note = note)
-                val isn = dao.insertNote(memento)
+                dao.insertNote(memento)
             }
         }
     }
-    fun setNewDate(date:ZonedDateTime){
-        currentDay.value=date;
+
+    fun setNewDate(date: LocalDate) {
+        currentDay.value = date
     }
-
-
 
 
     override fun onCleared() {
