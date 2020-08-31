@@ -20,6 +20,8 @@ class DiaryViewModel(private val dao:DiaryDao):ViewModel() {
     private val job = Job()
     private val viewModelScope = CoroutineScope(job + Dispatchers.Main)
     private val currentDay: MutableLiveData<LocalDate> = MutableLiveData(LocalDate.now())
+    val currentDate: LiveData<LocalDate>
+        get() = currentDay
     val firstNoteDate: LiveData<LocalDate> =
         Transformations.map(dao.getEarliestNote()) { zoneDate -> zoneDate.toLocalDate() }
     val notes = Transformations.switchMap(currentDay) { date ->

@@ -1,20 +1,30 @@
 package com.example.diary
 
+import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.diary.Calendar.DayViewContainer
 import com.example.diary.database.DiaryDatabase
 import com.example.diary.databinding.CalendarViewBinding
 import com.example.diary.factories.DiaryViewModelFactory
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.utils.Size
+import com.kizitonwose.calendarview.utils.yearMonth
 import java.time.LocalDate
-import java.time.ZonedDateTime
+import java.time.YearMonth
+import java.time.temporal.WeekFields
+import java.util.*
 
 
 @Suppress("DEPRECATION")
@@ -39,32 +49,64 @@ class CalendarFragment: Fragment() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.calendarView.maxDate = ZonedDateTime.now().toEpochSecond() * 1000
-
+        val dm = DisplayMetrics()
+        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(dm)
+        binding.calendarView.apply {
+            val dayWidth = dm.widthPixels / 5
+            val dayHeight = (dayWidth * 1.25).toInt()
+            daySize = Size(dayWidth, dayHeight)
+        }
         viewModel.firstNoteDate.observe(viewLifecycleOwner, Observer {
+            lateinit var firstMonth: YearMonth
             if (it != null)
-                binding.calendarView.minDate = it.toEpochDay() * 24 * 3600 * 1000
+                firstMonth = it.yearMonth
             else
-                binding.calendarView.minDate = ZonedDateTime.now().toEpochSecond() * 1000
+                firstMonth = YearMonth.now()
+            val currentMonth = YearMonth.now()
+            val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+            binding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
+                override fun create(view: View) = DayViewContainer(view) { day ->
+                    val firstDay = binding.calendarView.findFirstVisibleDay()
+                    val lastDay = binding.calendarView.findLastVisibleDay()
+                    if (firstDay == day) {
+                        // If the first date on screen was clicked, we scroll to the date to ensure
+                        // it is fully visible if it was partially off the screen when clicked.
+                        binding.calendarView.smoothScrollToDate(day.date)
+                    } else if (lastDay == day) {
+                        // If the last date was clicked, we scroll to 4 days ago, this forces the
+                        // clicked date to be fully visible if it was partially off the screen.
+                        // We scroll to 4 days ago because we show max of five days on the screen
+                        // so scrolling to 4 days ago brings the clicked date into full visibility
+                        // at the end of the calendar view.
+                        binding.calendarView.smoothScrollToDate(day.date.minusDays(4))
+                    }
+                    if (viewModel.currentDate.value != day.date) {
+                        viewModel.setNewDate(day.date)
+                        binding.calendarView.notifyDateChanged(day.date)
+                    }
+                }
+
+                override fun bind(container: DayViewContainer, day: CalendarDay) =
+                    container.bind(day, viewModel.currentDate)
+            }
+
+            binding.calendarView.setup(firstMonth, currentMonth, firstDayOfWeek)
+            binding.calendarView.scrollToDate(LocalDate.now())
+
 
         })
-        binding.calendarView.setOnDateChangeListener { _, year, month, day ->
-            binding.calendarView.date =
-                LocalDate.of(year, month + 1, day).toEpochDay() * 24 * 3600 * 1000
-            val currentDate = LocalDate.of(year, month + 1, day)
-            viewModel.setNewDate(currentDate)
-        }
 
-        viewModel.notes.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+        viewModel.notes.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
         binding.createNote.setOnClickListener {
-            it.findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToNoteWritingFragment())
+            it.findNavController()
+                .navigate(CalendarFragmentDirections.actionCalendarFragmentToNoteWritingFragment())
         }
-
         return binding.root
     }
-
 
 }

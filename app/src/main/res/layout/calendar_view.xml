@@ -10,12 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <CalendarView
+        <com.kizitonwose.calendarview.CalendarView
             android:id="@+id/calendarView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:visibility="visible"
+            app:cv_dayViewResource="@layout/calendar_day_layout"
+            app:cv_hasBoundaries="false"
+            app:cv_inDateStyle="none"
+            app:cv_maxRowCount="1"
+            app:cv_orientation="horizontal"
+            app:cv_outDateStyle="none"
+            app:cv_scrollMode="continuous"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,10 +45,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#FFFFFF"
-            android:visibility="@{viewModel.listVisible}"
             android:gravity="center"
             android:text="@string/nothing_to_show"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="@{viewModel.listVisible}"
             app:autoSizeTextType="none"
             app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="@+id/recyclerView"
