@@ -2,6 +2,7 @@ package com.example.diary
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,9 +33,22 @@ class RecyclerViewAdapter: ListAdapter<DiaryNotes,NoteViewHolder>(DiffCallback) 
 class NoteViewHolder(private var binding: NoteLayoutBinding):RecyclerView.ViewHolder(binding.root){
 
 
-    fun onBindData(note:DiaryNotes){
-        binding.diaryNote=note
+    fun onBindData(note:DiaryNotes) {
+        binding.diaryNote = note
         binding.executePendingBindings()
+        binding.noteText.post(Runnable {
+            val layout = binding.noteText.layout
+            if (layout.getEllipsisCount(3) > 0) {
+                binding.root.setOnClickListener {
+                    it.findNavController().navigate(
+                        CalendarFragmentDirections.actionCalendarFragmentToNoteViewFragment(note.note)
+                    )
+                }
+            } else {
+                binding.root.setOnClickListener(null)
+            }
+        })
+
     }
 
 }

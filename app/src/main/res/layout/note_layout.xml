@@ -33,13 +33,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="15dp"
+            android:ellipsize="end"
             android:gravity="center_vertical"
+            android:maxLines="4"
             android:text="@{diaryNote.note}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/time"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Yesterday, was a nice day full of new suprises for me. I woke up early." />
+            tools:text="I have an Android application layout which contains a multiline TextView. When the screen is in portrait orientation, the TextView can display a different length of text to when running in landscape mode. Also when running on a small screen, the TextView can display a different length of text to when running on a larger screen.  Is there any way I can check if the text fits or will be truncated? Or is there any way I can check if the TextView if full?  The problem is the TextView can potentially contain a different number of lines, depending on whether it is landscape, portrait, small screen, large screen, etc.  Thank you for your advice,  Best regards,  James" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
